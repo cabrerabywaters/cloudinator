@@ -6,7 +6,7 @@ $json = new Services_JSON();
 
 if(isset($_POST['type'])) {
 	try {
-		DBQuery("INSERT INTO `cloudinator`.`megatrees` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
+		DBQuery("INSERT INTO `cloudinator`.`Formularios` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
 			(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
 			");
 
@@ -35,7 +35,7 @@ else if(isset($_POST['clonename'])) {
 	$data3 = DBQuery($sql3);
 	$max = mysql_result($data3, 0);
 	
-	DBQuery("INSERT INTO `cloudinator`.`trees` (`id`, `name`,`megatree`, `deleted`, `created`) VALUES 
+	DBQuery("INSERT INTO `cloudinator`.`trees` (`id`, `name`,`Formulario`, `deleted`, `created`) VALUES 
 			(NULL, '$_POST[name]', $_POST[to] ,0,'".date("Y-m-d H:i:s")."');
 			");
 	
@@ -99,8 +99,8 @@ else if(isset($_POST['clonename'])) {
 	
 }else if (isset($_POST['name'])) {
 	try {
-		DBQuery("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `megatree`,`deleted`, `created`) VALUES 
-			(NULL, '$_POST[name]',$_POST[megatree] ,0, '".date("Y-m-d H:i:s")."');
+		DBQuery("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `Formulario`,`deleted`, `created`) VALUES 
+			(NULL, '$_POST[name]',$_POST[Formulario] ,0, '".date("Y-m-d H:i:s")."');
 			");
 		$data = array(
 			'result' => 'true',

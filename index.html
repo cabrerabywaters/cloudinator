@@ -173,6 +173,7 @@
 			<li id="newform"><a href="#"><i class="icon-file"></i> Nuevo Formulario</a>
 			<li><a href="#"><i class="icon-wrench"></i> Administracion</a>
 				<ul>
+					<li><a href="DB/installDB.php">Install / Reinstall Data Base</a></li>
 					<li><a href="DB/upgrade.php">Upgrade</a></li>
 				</ul>
 			</li>
@@ -218,7 +219,7 @@
 			success: function(data){
 				$('#allsubforms').empty();
 				$.each( data, function( i, item ) {
-					if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
+					if(item.deleted == 0 && item.Formulario == getQueryStringByName('id')){
 						//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
 						$('#allsubforms').append('<li><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></li>');
 						$('#clone').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
@@ -227,9 +228,9 @@
 			}
 		}).fail(function(data) {addNotice("error", "Error al acceder a la lista de Grafos");}).always(function(){$('.loading').fadeOut();});
 	}
-	function loadMegaTrees(){ //Actualiza la lista de Formularios que se muestran [AJAX].
+	function loadFormularios(){ //Actualiza la lista de Formularios que se muestran [AJAX].
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxFormularios.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -298,7 +299,7 @@
 						type: 'POST',
 						data: {
 							name: $('#textName').val(),
-							megatree: getQueryStringByName('id')
+							Formulario: getQueryStringByName('id')
 							},
 						timeout: 2500,
 						beforeSend: function(){$('.loading').fadeIn();},
@@ -331,13 +332,13 @@
 			type: 'POST',
 			data: {
 				name: $('#textNameForm').val(),
-				type : "megatree"
+				type : "Formulario"
 					},
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				addNotice("success", "Nuevo Formulario creado exitosamente");
-				loadMegaTrees();
+				loadFormularios();
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al crear el Formulario");
@@ -353,7 +354,7 @@
 	}
 	function deleteform(){ //Llamada por ajax para borrar Formulario.
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxFormularios.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -365,7 +366,7 @@
 			success: function(data){
 				window.location = "index.html";
 				//TODO: En caso que se ocupe otro metodo que no sea "window.location" es probable que se usen las sig lineas:
-				//loadMegaTrees(); //actualizar la lista de Formularios
+				//loadFormularios(); //actualizar la lista de Formularios
 				//addNotice("success", "Se ha borrado correctamente el Formulario"); //no tiene sentido porque con el window.location se elimina automaticamente
 			}
 		}).fail(function(data) {
@@ -375,7 +376,7 @@
 	}
 	function setNameToForm(){ //Pone el nombre del formulario que se ha selecionado en el inicio del menu [AJAX].
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxFormularios.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -398,7 +399,7 @@
 	}
 	function clonarForm(){ //TODO: SE VA A OCUPAR ESTA FUNCION O NO? EN ESTE MOMENTO NO SE USA PORQUE NO HAY CLONACION DE FORMULARIOS
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxFormularios.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -446,7 +447,7 @@
 
 	$(document).ready(function() {
 		
-		loadMegaTrees(); //Carga la lista de Formularios
+		loadFormularios(); //Carga la lista de Formularios
 		
 		//decide si muestra el menu de Formularios o el de Subformularios
 		if(getQueryStringByName('id')){

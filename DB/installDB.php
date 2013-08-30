@@ -69,7 +69,7 @@ try {
 	DBQuery("CREATE TABLE IF NOT EXISTS `trees` (
 		`id` int(100) NOT NULL AUTO_INCREMENT ,
 		`name` varchar(50) NOT NULL,
-		`megatree` int(100) NOT NULL,
+		`Formulario` int(100) NOT NULL,
 		`deleted` tinyint(1) NOT NULL,
 		`created` datetime NOT NULL,
 		`modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
@@ -82,10 +82,10 @@ try {
 	echo $e;
 }
 echo '<hr>';
-//crear tabla "megatrees" id, name, source, target
-echo '<h3>Creando Tabla "megatrees"</h3>';
+//crear tabla "Formularios" id, name, source, target
+echo '<h3>Creando Tabla "Formularios"</h3>';
 try {
-	DBQuery("CREATE TABLE IF NOT EXISTS `megatrees` (
+	DBQuery("CREATE TABLE IF NOT EXISTS `Formularios` (
 		`id` int(100) NOT NULL AUTO_INCREMENT,
 		`name` varchar(50) NOT NULL,
 		`chain` varchar(1000),
@@ -95,9 +95,9 @@ try {
 		PRIMARY KEY (`id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 	");
-	echo 'Tabla "megatrees" creada exitosamente';
+	echo 'Tabla "Formularios" creada exitosamente';
 } catch (Exception $e) {
-	echo 'Error al crear tabla "megatrees"<br>';
+	echo 'Error al crear tabla "Formularios"<br>';
 	echo $e;
 }
 echo '<hr>';
