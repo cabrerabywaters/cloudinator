@@ -9,22 +9,22 @@ if(isset($_POST['action'])) {
 	if($_POST['action']=="delete"){
 		try {
 			$id = $_POST['id'];
-			$sqltreescount = "SELECT count(id) FROM trees WHERE Formulario=$id";
-			$data1 = DBQuery($sqltreescount);
-			$maxtrees = mysql_result($data1, 0);
+			$sqlSubformularioscount = "SELECT count(id) FROM Subformularios WHERE Formulario=$id";
+			$data1 = DBQuery($sqlSubformularioscount);
+			$maxSubformularios = mysql_result($data1, 0);
 			
-			$sqltrees = "SELECT id FROM trees WHERE Formulario=$id";
-			$data2 = DBQuery($sqltrees);
+			$sqlSubformularios = "SELECT id FROM Subformularios WHERE Formulario=$id";
+			$data2 = DBQuery($sqlSubformularios);
 			
-			for ($i = 0; $i < $maxtrees; $i++) {
-				$idtree= mysql_result($data2, $i, 'trees.id');
-				$querydeletenodes = "DELETE FROM nodos WHERE tree=$idtree";	
+			for ($i = 0; $i < $maxSubformularios; $i++) {
+				$idSubformulario= mysql_result($data2, $i, 'Subformularios.id');
+				$querydeletenodes = "DELETE FROM nodos WHERE Subformulario=$idSubformulario";	
 				DBQuery($querydeletenodes);
 			}
 			//TODO:falta borrar links
 			
-			$querytree = "DELETE FROM trees WHERE Formulario=$id;";
-			DBQuery($querytree);
+			$querySubformulario = "DELETE FROM Subformularios WHERE Formulario=$id;";
+			DBQuery($querySubformulario);
 			
 			$queryFormulario = "DELETE FROM Formularios WHERE id=$id;";
 			DBQuery($queryFormulario);

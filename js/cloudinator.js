@@ -26,11 +26,11 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		var newname = prompt("Nuevo Nombre","");
 		if (newname!=null && newname!=""){
 			
-			A.io.request('/cloudinator/ajax/ajaxTrees.php', {
+			A.io.request('/cloudinator/ajax/ajaxSubformularios.php', {
 				dataType: 'json',
 				method: 'POST',
 				data: {
-					tree: getQueryStringByName('id'),
+					subformulario: getQueryStringByName('id'),
 					nuevonombre: newname
 						},
 				on: {   
@@ -49,12 +49,12 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	}
 	function estaseguro(){
 		if(confirm("¿Esta Seguro que deseas eliminar el subformulario?")){
-			A.io.request('/cloudinator/ajax/ajaxTrees.php', {
+			A.io.request('/cloudinator/ajax/ajaxSubformularios.php', {
 				dataType: 'json',
 				method: 'POST',
 				data: {
-					tree: getQueryStringByName('id'),
-					action: "deleteTree"
+					subformulario: getQueryStringByName('id'),
+					action: "deleteSubformulario"
 						},
 				on: {   
 					success: function(data) {
@@ -75,7 +75,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		autoLoad: true,
 		dataType: 'json',
 		method: 'POST',
-		data: {tree: getQueryStringByName('id')},
+		data: {subformulario: getQueryStringByName('id')},
 		on: {   
 			start:function(){
 				//mostrar loading
@@ -93,11 +93,11 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		}
 	});
 
-	function andaABuscarLosLinks(treeID) {
+	function andaABuscarLosLinks(SubformularioID) {
 		A.io.request('/cloudinator/ajax/ajaxlinks.php', {
 			dataType: 'json',
 			method: 'POST',
-			data: {tree: treeID},
+			data: {subformulario: SubformularioID},
 			on: {   
 				success: function() {
 					var datos = this.get('responseData');
@@ -109,14 +109,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	}
-	function ajaxPostNodo(action, name, type, posx, posy, tree){
+	function ajaxPostNodo(action, name, type, posx, posy, Subformulario){
 		A.io.request('/cloudinator/ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
 			data: {
 				nodo: action,
 				name: name,
-				tree: tree,
+				subformulario: Subformulario,
 				type: type,
 				posx: posx,
 				posy: posy
@@ -129,7 +129,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	}
-	function ajaxUpdateMetadata(nombre, tree, metaname, metadata, metatype){
+	function ajaxUpdateMetadata(nombre, Subformulario, metaname, metadata, metatype){
 		A.io.request('/cloudinator/ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
@@ -137,7 +137,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				nodo: 'updateMeta',
 				newname: newname,
 				oldname: oldname,
-				tree: tree
+				subformulario: Subformulario
 			},
 			on: {
 				success: function(data){
@@ -147,7 +147,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	}
-	function ajaxChangeNodoNameTEST(oldname, newname, tree){
+	function ajaxChangeNodoNameTEST(oldname, newname, Subformulario){
 		A.io.request('/cloudinator/ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
@@ -155,7 +155,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				nodo: 'newnameTEST',
 				newname: newname,
 				oldname: oldname,
-				tree: tree
+				subformulario: Subformulario
 			},
 			on: {
 				success: function(data){
@@ -166,7 +166,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		});
 	}
 
-	function ajaxChangeNodoName(id, newname, tree){
+	function ajaxChangeNodoName(id, newname, Subformulario){
 		A.io.request('/cloudinator/ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
@@ -174,7 +174,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				nodo: 'newname',
 				name: newname,
 				id: id,
-				tree: tree
+				subformulario: Subformulario
 			},
 			on: {
 				success: function(data){
@@ -187,13 +187,13 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		});
 	}
 
-	function ajaxNodoGetIdFromName(name, tree){
+	function ajaxNodoGetIdFromName(name, Subformulario){
 		A.io.request('/cloudinator/ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
 			data: {
 				getIdFromName: name,
-				tree: tree
+				subformulario: Subformulario
 			},
 			on: {
 				success: function(data){
@@ -221,14 +221,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		});
 	}
 
-	function ajaxPostLink(action, name, source, target, tree){
+	function ajaxPostLink(action, name, source, target, Subformulario){
 		A.io.request('/cloudinator/ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
 			data: {
 				link: action,
 				name: name,
-				tree: tree,
+				subformulario: Subformulario,
 				source: source,
 				target: target
 			},

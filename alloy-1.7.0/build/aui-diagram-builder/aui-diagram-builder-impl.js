@@ -1,13 +1,13 @@
 AUI.add('aui-diagram-builder-impl', function(A) {
 //codigo implantado cloudinator team
-function ajaxPostLink(action, name, source, target, tree, typetarget, xtarget, ytarget){
+function ajaxPostLink(action, name, source, target, subformulario, typetarget, xtarget, ytarget){
 	A.io.request('/cloudinator/ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
 		data: {
 			link: action,
 			name: name,
-			tree: tree,
+			subformulario: subformulario,
 			source: source,
 			target: target,
 			typetarget: typetarget,
@@ -21,14 +21,14 @@ function ajaxPostLink(action, name, source, target, tree, typetarget, xtarget, y
 	});
 }
 	
-function ajaxPostNodo(action, name, type, posx, posy, tree){
+function ajaxPostNodo(action, name, type, posx, posy, subformulario){
 	A.io.request('/cloudinator/ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
 		data: {
 			nodo: action,
 			name: name,
-			tree: tree,
+			subformulario: subformulario,
 			type: type,
 			posx: posx,
 			posy: posy
@@ -41,7 +41,7 @@ function ajaxPostNodo(action, name, type, posx, posy, tree){
 		}
 	});
 }
-function ajaxChangeNodoName(id, newname, tree){
+function ajaxChangeNodoName(id, newname, subformulario){
 	A.io.request('/cloudinator/ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
@@ -49,7 +49,7 @@ function ajaxChangeNodoName(id, newname, tree){
 			nodo: 'newname',
 			name: newname,
 			id: id,
-			tree: tree
+			subformulario: subformulario
 		},
 		on: {
 			success: function(data){
@@ -59,19 +59,19 @@ function ajaxChangeNodoName(id, newname, tree){
 		}
 	});
 }
-function ajaxNodoGetIdFromName(name, tree, newname){
+function ajaxNodoGetIdFromName(name, subformulario, newname){
 	A.io.request('/cloudinator/ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
 		data: {
 			getIdFromName: name,
-			tree: tree
+			subformulario: subformulario
 		},
 		on: {
 			success: function(data){
 				console.log('AJAXresponseDataGetIdFromName', name, this.get('responseData'));
 				if(newname != null){
-					ajaxChangeNodoName(this.get('responseData'), newname, tree);
+					ajaxChangeNodoName(this.get('responseData'), newname, subformulario);
 				}else{
 					return this.get('responseData');
 				}
@@ -473,10 +473,11 @@ var DiagramBuilder = A.Component.create({
 				AArray.each(selectedConnectors, function(connector) {
 					var transition = connector.get(TRANSITION);
 					
-					//C�digo implantado por cloudinator team
+					//Codigo implantado por cloudinator team
 					console.log('aca se elimina un conector', transition.source, transition.target);
 					ajaxPostLink("delete", "", transition.source, transition.target, getQueryStringByName('id'));
-					//Fin C�digo implantado por cloudinator team
+					//creo que esto esta roto
+					//Fin Codigo implantado por cloudinator team
 					
 
 					A.DiagramNode.getNodeByName(transition.source).disconnect(transition);
@@ -889,7 +890,7 @@ var DiagramBuilder = A.Component.create({
 						metadata: attributes['metadata'],
 						metatype: attributes['metatype'],
 						metaname: attributes['metaname'],
-						tree: getQueryStringByName('id'),
+						subformulario: getQueryStringByName('id'),
 	
 					},
 					on: {
@@ -1098,13 +1099,14 @@ var DiagramNode = A.Component.create({
 			valueFn: function() {
 				var instance = this;
 				
-				//c�digo implantado por cloudinator team
+				//codigo implantado por cloudinator team
 				/*if(instance.get(TYPE) == 'end'){
 					return 'nueva respuesta';
 				}else if(instance.get(TYPE) == 'condition') {
 					return 'nueva pregunta';
 				}
-				*///fin c�digo implantado por cloudinator team
+				*/
+				//fin codigo implantado por cloudinator team
 
 				return instance.get(TYPE) + (++A.Env._uidx);
 			},
@@ -1383,13 +1385,13 @@ var DiagramNode = A.Component.create({
 			var instance = this;
 			var dd = instance.boundaryDragDelegate.dd;
 			
-			//C�digo implantado cloudinator team
+			//Codigo implantado cloudinator team
 			var idstart = instance.get(BOUNDING_BOX).getAttribute("id");
 			var idend = diagramNode.get(BOUNDING_BOX).getAttribute("id");
 			namestart = A.one('#'+idstart).get('children').slice(-2).get('text')[0];
 			nameend = A.one('#'+idend).get('children').slice(-2).get('text')[0];
 			
-			
+			//TODO: BORRAR ESTOS CONSOLE.LOG
 			console.log("nombrestartaaa",instance.boundaryDragDelegate); 
 			console.log("nombreend",diagramNode.get(BOUNDING_BOX).getXY()); 
 			
@@ -1411,25 +1413,24 @@ var DiagramNode = A.Component.create({
 				alert("no se puede conectar dos nodos del mismo tipo");
 				
 			}else{
-				//ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'), typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59);
 				A.io.request('/cloudinator/ajax/ajaxpost.php', {
 					autoLoad: true,
 					method: 'POST',
 					data: {
 						link: "insert",
 						name: "",
-						tree: getQueryStringByName('id'),
+						subformulario: getQueryStringByName('id'),
 						source: namestart,
 						target: nameend,
 						typetarget: typetarget,
 						xtarget: diagramNode.get(BOUNDING_BOX).getXY()[0] - 278,
-						ytarget: diagramNode.get(BOUNDING_BOX).getXY()[1] -59
+						ytarget: diagramNode.get(BOUNDING_BOX).getXY()[1] - 59
 					},
 					on: {
 						success: function(data){
 							console.log('el link ha sido generado',this.get('responseData'));
 							if(this.get('responseData') != '{"result":"true"}' ){
-								alert("you can't do that! ");
+								alert("you can't do that!");
 							}else{
 								instance.connect(
 									instance.prepareTransition({
@@ -1443,10 +1444,8 @@ var DiagramNode = A.Component.create({
 					}
 				});
 				
-				//Fin c�digo implantado cloudinator team
-				
-				
-				
+				//Fin codigo implantado cloudinator team
+
 			}
 			
 			
@@ -1828,7 +1827,8 @@ var DiagramNode = A.Component.create({
 
 		_onNameChange: function(event) {
 			var instance = this;
-			//C�digo implantado por cloudinator team
+			//Codigo implantado por cloudinator team
+
 			//var nodeid = instance.get(BOUNDING_BOX)._node.getAttribute("id");
 			//namestart = A.one('#'+nodeid).get('children').slice(-2).get('text')[0];
 			console.log("details", event);
@@ -1843,7 +1843,7 @@ var DiagramNode = A.Component.create({
 						nodo: 'newname',
 						name: event.newVal,
 						id: event.prevVal,
-						tree: getQueryStringByName('id')
+						subformulario: getQueryStringByName('id')
 					},
 					on: {
 						success: function(data){
@@ -1870,7 +1870,7 @@ var DiagramNode = A.Component.create({
 				});
 			}
 
-			//fin c�digo implantado por cloudinator team
+			//fin codigo implantado por cloudinator team
 			
 			
 			

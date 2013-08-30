@@ -5,7 +5,7 @@ require_once('../DB/db.php');
 $json = new Services_JSON();
 
 try {	
-	$query = "SELECT * FROM links WHERE tree='".$_POST['tree']."'";
+	$query = "SELECT * FROM links WHERE Subformulario='".$_POST['Subformulario']."'";
 	$datos = DBQueryReturnArray($query);
 	$salida = $json->encode($datos);
 

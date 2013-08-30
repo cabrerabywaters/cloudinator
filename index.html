@@ -43,7 +43,7 @@
 			opacity: 0.5;
 			z-index: 90001;
 		}
-		#newTreeName{
+		#newSubformularioName{
 			display: none;
 			position: absolute;
 			top: 40%;
@@ -67,7 +67,7 @@
 			background-color: #FFFFFF;
 			border: 5px groove #9090dd;
 		}
-		#copyTreeName{
+		#copySubformularioName{
 			display: none;
 			position: absolute;
 			top: 40%;
@@ -113,20 +113,22 @@
 	<!-- ELEMENTOS FLOTANTES (inicio) -->
 	<div id="notices"></div>
 
-	<div id="newTreeName" class="col_3 column formPopUp">
+	<div id="newSubformularioName" class="col_3 column formPopUp">
 		<label for="textName" class="formElement">Nombre: </label>
 		<input id="textName" class="formElement" type="text" />
 		<br>
 		<button id="buttonName" class="formElement">Crear</button>
 		<button id="buttonCancel" class="formElement">Cancelar</button>
 	</div>
-	<div id="copyTreeName" class="col_3 column formPopUp" data-copyid="">
+
+	<div id="copySubformularioName" class="col_3 column formPopUp" data-copyid="">
 		<label for="textNameCopy" class="formElement">Nombre: </label>
 		<input id="textNameCopy" class="formElement" type="text" />
 		<br>
 		<button id="buttonNameCopy" class="formElement">Crear</button>
 		<button id="buttonCancelCopy" class="formElement">Cancelar</button>
 	</div>
+
 	<div id="cloneFormName" class="col_3 column formPopUp" data-copyid="0">
 		<label for="textNameCloneForm" class="formElement">Nombre: </label>
 		<input id="textNameCloneForm" class="formElement" type="text" />
@@ -149,7 +151,6 @@
 	</div>
 
 	<img id="loadingGif" class="loading" src="content/ajax-loader.gif">
-
 	<div class="blackout loading"></div>
 	<!-- ELEMENTOS FLOTANTES (fin) -->
 
@@ -166,7 +167,7 @@
 	<!-- MENU FORMULARIOS (inicio) -->
 	<div class="col_4 column forms">
 		<ul class="menu vertical forms">
-			<li id="forms"><a href=""><i class="icon-share"></i> Formularios</a>
+			<li id="forms"><a href="#"><i class="icon-share"></i> Formularios</a>
 				<ul id="allforms">
 					</ul>
 			</li>
@@ -187,7 +188,7 @@
 	<div class="col_4 column subforms">
 		<ul class="menu vertical">
 			<li id="formname"><a href="#"> Nombre </a></li>
-			<li><a href=""><i class="icon-share"></i>Subformularios</a>
+			<li><a href="#"><i class="icon-share"></i>Subformularios</a>
 				<ul id="allsubforms">
 				</ul>
 			</li>
@@ -209,10 +210,10 @@
 	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 	
 	<script>
-	function cargarGrafos(){ //Actualiza la lista de Subformularios [AJAX].
+	function loadSubformularios(){ //Actualiza la lista de Subformularios [AJAX].
 		
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxSubformularios.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -226,7 +227,7 @@
 					}
 				});
 			}
-		}).fail(function(data) {addNotice("error", "Error al acceder a la lista de Grafos");}).always(function(){$('.loading').fadeOut();});
+		}).fail(function(data) {addNotice("error", "Error al acceder a la lista de Subformularios");}).always(function(){$('.loading').fadeOut();});
 	}
 	function loadFormularios(){ //Actualiza la lista de Formularios que se muestran [AJAX].
 		$.ajax({
@@ -244,7 +245,7 @@
 				});
 			}
 		}).fail(function(data) {
-			addNotice("error", "Error al acceder a la lista de Grafos");
+			addNotice("error", "Error al acceder a la lista de Subformularios");
 		}).always(function(){$('.loading').fadeOut();});
 	}
 	function clonar(){ //Llama a un form para clonar un Subformulario (y lo clona) [AJAX].
@@ -253,10 +254,10 @@
 				$('#cloneFormName').data("copyid"), 
 				$('#textNameCloneForm').val() );
 		
-		$('#copyTreeName').slideUp();
+		$('#copySubformularioName').slideUp();
 		
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxSubformularios.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -268,9 +269,9 @@
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				console.log("success on clonar()", data);
-				cargarGrafos();
+				loadSubformularios();
 				addNotice("success", "Nuevo Subformulario clonado exitosamente");
-				//$('#newTreeName').slideDown();
+				//$('#newSubformularioName').slideDown();
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al clonar el Subformulario");
@@ -278,10 +279,10 @@
 			console.log("fail on clonar()", data);
 		}).always(function(){$('.loading').fadeOut();});
 	}
-	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: POSIBLE COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
-		$('#newTreeName').slideUp();
+	function createSubformulario(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: POSIBLE COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
+		$('#newSubformularioName').slideUp();
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxSubformularios.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -294,7 +295,7 @@
 				});
 				if(checker == 0){
 					$.ajax({
-						url: '/cloudinator/ajax/ajaxTrees.php',
+						url: '/cloudinator/ajax/ajaxSubformularios.php',
 						dataType: 'json',
 						type: 'POST',
 						data: {
@@ -304,30 +305,30 @@
 						timeout: 2500,
 						beforeSend: function(){$('.loading').fadeIn();},
 						success: function(data){
-							console.log("success on enviarForm()", data);
-							cargarGrafos();
+							console.log("success on createSubformulario()", data);
+							loadSubformularios();
 							addNotice("success", "Nuevo Subformulario creado exitosamente");
 						}
 					}).fail(function(data) {
 						addNotice("error", "Error al crear el Subformulario");
 						//window.location.reload();
-						console.log("fail on enviarForm()", data);
+						console.log("fail on createSubformulario()", data);
 					}).always(function(){$('.loading').fadeOut();});
 				}else{
 					$('#loadingGif').fadeOut();
 					addNotice("warning", "Nombre ocupado")
-					$('#newTreeName').slideDown();
+					$('#newSubformularioName').slideDown();
 				}
 			}
 		}).fail(function(data) {
 			$('.loading').fadeOut();
-			$addNotice("error", "Error al acceder a la lista de Grafos");
+			$addNotice("error", "Error al acceder a la lista de Subformularios");
 		});
 	}
-	function createNewForm(){ //Llama a un form para crear un Formulario [AJAX].
+	function createFormulario(){ //Llama a un form para crear un Formulario [AJAX].
 		$('#newFormName').slideUp();
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxSubformularios.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -342,7 +343,7 @@
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al crear el Formulario");
-			console.log("error en createNewForm", data);
+			console.log("error en createFormulario", data);
 		}).always(function(){$('.loading').fadeOut();});
 	}
 	function confirmdelete(){ //Llama a deleteform() en caso de que el usuario acepte, de lo contrario retorna false.
@@ -374,7 +375,7 @@
 			console.log("Error en deleteform", data);
 		}).always(function(){$('.loading').fadeOut();});
 	}
-	function setNameToForm(){ //Pone el nombre del formulario que se ha selecionado en el inicio del menu [AJAX].
+	function setNameToFormulario(){ //Pone el nombre del formulario que se ha selecionado en el inicio del menu [AJAX].
 		$.ajax({
 			url: '/cloudinator/ajax/ajaxFormularios.php',
 			dataType: 'json',
@@ -386,18 +387,18 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				console.log("success en setNameToForm");
+				console.log("success en setNameToFormulario");
 				$.each( data, function( i, item ) {
 					$('#formname').empty();
 					$('#formname').append("<a href='#'>Formulario: "+item.name+"</a>");
 				});
 			}
 		}).fail(function(data) {
-			console.log("error al setNameToForm", data);
+			console.log("error al setNameToFormulario", data);
 			addNotice("error", "Se ha producido un error al rescatar el nombre del Formulario");
 		}).always(function(){$('.loading').fadeOut();});
 	}
-	function clonarForm(){ //TODO: SE VA A OCUPAR ESTA FUNCION O NO? EN ESTE MOMENTO NO SE USA PORQUE NO HAY CLONACION DE FORMULARIOS
+	function clonarFormulario(){ //TODO: SE VA A OCUPAR ESTA FUNCION O NO? EN ESTE MOMENTO NO SE USA PORQUE NO HAY CLONACION DE FORMULARIOS
 		$.ajax({
 			url: '/cloudinator/ajax/ajaxFormularios.php',
 			dataType: 'json',
@@ -409,14 +410,14 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				console.log("success al clonarForm", data);
-				cargarGrafos();
+				console.log("success al clonarFormulario", data);
+				loadSubformularios();
 				addNotice("success", "El Formulario se a clonado exitosamente");
-				//$('#newTreeName').slideDown();
+				//$('#newSubformularioName').slideDown();
 			}
 		}).fail(function(data) {
 			window.location.reload(); //TODO: PORQUE EL RELOAD?
-			console.log("error al clonarForm", data);
+			console.log("error al clonarFormulario", data);
 			addNotice("error", "Error al clonar el Formulario");
 		}).always(function(){$('.loading').fadeOut();});
 		alert("Este mensaje debe ser eliminado del codigo, existe para confirmar el ingreso a una funcion especifica del codigo, si usted es un usuario final avise al administrador");
@@ -451,8 +452,8 @@
 		
 		//decide si muestra el menu de Formularios o el de Subformularios
 		if(getQueryStringByName('id')){
-			setNameToForm();
-			cargarGrafos();
+			setNameToFormulario();
+			loadSubformularios();
 			$("div.col_4.column.forms").remove();
 		}else{
 			$("div.col_4.column.subforms").remove();
@@ -468,11 +469,11 @@
 		});
 		$("#textNameForm").keypress(function(event) {
 			if(event.which == 13){
-				createNewForm();
+				createFormulario();
 			}
 		});
 		$("#buttonNameForm").on('click', function(event){
-			createNewForm();
+			createFormulario();
 		});
 		
 		//Inicia proceso de clonacion de Subformularios
@@ -485,21 +486,21 @@
 		//Comportamiento del form de creacion de Subformularios
 		$('#new').on('click', function(event){
 			$('.blackout').fadeIn();
-			$('#newTreeName').slideDown();
+			$('#newSubformularioName').slideDown();
 			//abrir cuadro de dialogo para elegir nombre
 			//hacer llamada por ajax para generar el nuevo arbol en la DB y rescatar la id, para despues ir a cloudinator.html
 		});
 		$('#buttonCancel').on('click', function(){
-			$('#newTreeName').slideUp();
+			$('#newSubformularioName').slideUp();
 			$('.blackout').fadeOut();
 		});
 		$("#textName").keypress(function(event) {
 			if(event.which == 13){
-				enviarForm();
+				createSubformulario();
 			}
 		});
 		$('#buttonName').on('click', function(event){
-			enviarForm();
+			createSubformulario();
 		});
 		
 		//WTF IS THIS? //CREO QUE ACA ESTA EL ERROR DE CLONADO!

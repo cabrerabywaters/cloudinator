@@ -28,7 +28,7 @@ echo '<h3>Creando Tabla "nodos"</h3>';
 try {
 	DBQuery("CREATE TABLE nodos (
 		id int(100) not null auto_increment primary key,
-		tree int(50) NOT NULL,
+		Subformulario int(50) NOT NULL,
 		name varchar(50) NOT NULL,
 		type varchar(25) NOT NULL,
 		posx float(50) NOT NULL,
@@ -50,7 +50,7 @@ echo '<h3>Creando Tabla "links"</h3>';
 try {
 	DBQuery("CREATE TABLE links (
 		id int(100) not null auto_increment primary key,
-		tree int(50) NOT NULL,
+		Subformulario int(50) NOT NULL,
 		name varchar(50),
 		source varchar(50),
 		target varchar(50),
@@ -63,10 +63,10 @@ try {
 	echo $e;
 }
 echo '<hr>';
-//crear tabla "trees" id, name, source, target
-echo '<h3>Creando Tabla "trees"</h3>';
+//crear tabla "Subformularios" id, name, source, target
+echo '<h3>Creando Tabla "Subformularios"</h3>';
 try {
-	DBQuery("CREATE TABLE IF NOT EXISTS `trees` (
+	DBQuery("CREATE TABLE IF NOT EXISTS `Subformularios` (
 		`id` int(100) NOT NULL AUTO_INCREMENT ,
 		`name` varchar(50) NOT NULL,
 		`Formulario` int(100) NOT NULL,
@@ -76,9 +76,9 @@ try {
 		PRIMARY KEY (`id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 	");
-	echo 'Tabla "trees" creada exitosamente';
+	echo 'Tabla "Subformularios" creada exitosamente';
 } catch (Exception $e) {
-	echo 'Error al crear tabla "trees"<br>';
+	echo 'Error al crear tabla "Subformularios"<br>';
 	echo $e;
 }
 echo '<hr>';

@@ -10,7 +10,7 @@ if(isset($_POST['type'])) {
 			(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
 			");
 
-		//$data = DBQuery("SELECT id FROM trees WHERE name = '$_POST[name]'");
+		//$data = DBQuery("SELECT id FROM Subformularios WHERE name = '$_POST[name]'");
 		//print($json->encode(mysql_result($data, 0)));
 		$data = array(
 		'result' => 'true',
@@ -24,23 +24,23 @@ if(isset($_POST['type'])) {
 }
 else if(isset($_POST['clonename'])) {
 	
-	$sql = "SELECT id FROM trees WHERE name = '$_POST[clonename]'";
+	$sql = "SELECT id FROM Subformularios WHERE name = '$_POST[clonename]'";
 	$data1 = DBQuery($sql);
 	$idclone = mysql_result($data1, 0);
 	
-	$sql2 = "SELECT name, type, posx, posy FROM nodos WHERE tree = $idclone";
+	$sql2 = "SELECT name, type, posx, posy FROM nodos WHERE Subformulario = $idclone";
 	$data2 = DBQuery($sql2);
 	
-	$sql3 = "SELECT count(id) FROM nodos WHERE tree = $idclone";
+	$sql3 = "SELECT count(id) FROM nodos WHERE Subformulario = $idclone";
 	$data3 = DBQuery($sql3);
 	$max = mysql_result($data3, 0);
 	
-	DBQuery("INSERT INTO `cloudinator`.`trees` (`id`, `name`,`Formulario`, `deleted`, `created`) VALUES 
+	DBQuery("INSERT INTO `cloudinator`.`Subformularios` (`id`, `name`,`Formulario`, `deleted`, `created`) VALUES 
 			(NULL, '$_POST[name]', $_POST[to] ,0,'".date("Y-m-d H:i:s")."');
 			");
 	
-	$sqlgettree = "SELECT id FROM trees WHERE name = '$_POST[name]'";
-	$data4 = DBQuery($sqlgettree);
+	$sqlgetSubformulario = "SELECT id FROM Subformularios WHERE name = '$_POST[name]'";
+	$data4 = DBQuery($sqlgetSubformulario);
 	$idnew = mysql_result($data4, 0);
 	
 	
@@ -51,7 +51,7 @@ else if(isset($_POST['clonename'])) {
 		$posx = mysql_result($data2, $i, 'nodos.posx');
 		$posy = mysql_result($data2, $i, 'nodos.posy');
 		
-		$query = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
+		$query = "INSERT INTO `cloudinator`.`nodos` (`id`, `Subformulario`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
 				(NULL, $idnew, '$name', '$type', '$posx', '$posy', null, null, null);
 				";
 		DBQuery($query);
@@ -60,10 +60,10 @@ else if(isset($_POST['clonename'])) {
 	}
 	
 	
-	$linksprevquery = "SELECT source, target FROM links WHERE tree = $idclone";
+	$linksprevquery = "SELECT source, target FROM links WHERE Subformulario = $idclone";
 	$linksprev= DBQuery($linksprevquery);
 	
-	$countprevquery = "SELECT count(id) FROM links WHERE tree = $idclone";
+	$countprevquery = "SELECT count(id) FROM links WHERE Subformulario = $idclone";
 	$countprev = DBQuery($countprevquery);
 	$maxlinks = mysql_result($countprev, 0);
 	
@@ -83,7 +83,7 @@ else if(isset($_POST['clonename'])) {
 		$idnewsource = mysql_result($newsource, 0);
 		
 		
-		$query = "INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
+		$query = "INSERT INTO `cloudinator`.`links` (`id`, `Subformulario`, `name`, `source`, `target`) VALUES 
 				(NULL, $idnew, '', '$idnewsource', '$idnewtarget');";
 				
 		DBQuery($query);
@@ -99,7 +99,7 @@ else if(isset($_POST['clonename'])) {
 	
 }else if (isset($_POST['name'])) {
 	try {
-		DBQuery("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `Formulario`,`deleted`, `created`) VALUES 
+		DBQuery("INSERT INTO `cloudinator`.`Subformularios` (`id`, `name`, `Formulario`,`deleted`, `created`) VALUES 
 			(NULL, '$_POST[name]',$_POST[Formulario] ,0, '".date("Y-m-d H:i:s")."');
 			");
 		$data = array(
@@ -107,7 +107,7 @@ else if(isset($_POST['clonename'])) {
 		);
 		print($json->encode($data));
 
-		//$data = DBQuery("SELECT id FROM trees WHERE name = '$_POST[name]'");
+		//$data = DBQuery("SELECT id FROM Subformularios WHERE name = '$_POST[name]'");
 		//print($json->encode(mysql_result($data, 0)));
 	} catch (Exception $e) {
 		print($e);
@@ -115,9 +115,9 @@ else if(isset($_POST['clonename'])) {
 }else if(isset($_POST['action'])){
 	
 	try {
-		DBQuery("DELETE FROM links WHERE tree = $_POST[tree]");
-		DBQuery("DELETE FROM nodos WHERE tree = $_POST[tree]");
-		DBQuery("DELETE FROM trees WHERE id = $_POST[tree]");
+		DBQuery("DELETE FROM links WHERE Subformulario = $_POST[Subformulario]");
+		DBQuery("DELETE FROM nodos WHERE Subformulario = $_POST[Subformulario]");
+		DBQuery("DELETE FROM Subformularios WHERE id = $_POST[Subformulario]");
 		$data = array(
 			'result' => 'true',
 		);
@@ -130,7 +130,7 @@ else if(isset($_POST['clonename'])) {
 
 }else if(isset($_POST['nuevonombre'])){
 	try {
-		DBQuery("UPDATE trees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[tree]");
+		DBQuery("UPDATE Subformularios SET name = '$_POST[nuevonombre]' WHERE id = $_POST[Subformulario]");
 		$data = array(
 			'result' => 'true',
 		);
@@ -144,7 +144,7 @@ else if(isset($_POST['clonename'])) {
 
 
 	try {	
-		$query = 'SELECT * FROM trees';
+		$query = 'SELECT * FROM Subformularios';
 		$datos = DBQueryReturnArray($query);
 		$salida = $json->encode($datos);
 
