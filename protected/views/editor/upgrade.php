@@ -10,6 +10,11 @@
 echo '<a href="../editor/">Volver</a>';
 echo '<center><br><h2>Actualización de la Base de Datos</h2><br>';
 
+$options = [
+    'cost' => 11,
+    'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+];
+
 //si existe la tabla cloudinator saco la version de ahí si no la setteo 
 try {
 	$query = 'SELECT * FROM cloudinator_upgrades';
@@ -38,7 +43,7 @@ if($version < 2013082700){
 	try{
 		//aqui se escribe el código
 		Yii::app()->db->createCommand("INSERT INTO `users` (`id`, `email`, `name`, `lastname`, `password`, `firstaccess` , `lastaccess`, `lang`, `modified`) VALUES 
-			(NULL, 'admin', 'Sr', 'Admin', '".crypt('pepito.P0')."', '".time()."', '".time()."' , 'es', '".time()."'  )
+			(NULL, 'admin', 'Sr', 'Admin', '".password_hash('pepito.P0', PASSWORD_BCRYPT, $options)."', '".time()."', '".time()."' , 'es', '".time()."'  )
 			")->execute();;
 		//actualiazo la versión
 		Yii::app()->db->createCommand("UPDATE cloudinator_upgrades SET version = '2013082700' WHERE id = 1")->execute();
@@ -257,7 +262,7 @@ if ($version < 2013112500) {
 	echo '<hr>';
 	echo '<h4>Actualización N° 2013-11-25-00</h4>';
 	try {
-		Yii::app()->db->createCommand("UPDATE users SET password = '".crypt("pepito.P0")."' WHERE email = 'admin'")->execute();
+		Yii::app()->db->createCommand("UPDATE users SET password = '".password_hash('pepito.P0', PASSWORD_BCRYPT, $options)."' WHERE email = 'admin'")->execute();
 
 		//actualiazo la versión
 		Yii::app()->db->createCommand("UPDATE cloudinator_upgrades SET version = '2013112500' WHERE id = 1")->execute();

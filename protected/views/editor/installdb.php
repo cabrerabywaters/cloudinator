@@ -93,7 +93,7 @@ echo '<hr>';
 //crear tabla "users"
 echo '<h3>Creando Tabla "users"</h3>';
 try {
-	Yii::app()->db->createCommand("CREATE TABLE IF NOT EXISTS `users` (
+	Yii::app()->db->createCommand("CREATE TABLE `users` (
 		`id` int(100) NOT NULL AUTO_INCREMENT,
 		`email` varchar(50) NOT NULL,
 		`name` varchar(50),
